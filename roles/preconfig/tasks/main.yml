@@ -1,0 +1,44 @@
+---
+- name: Настройка системы
+  block:
+    - name: Установка дополнительных пакетов
+      ansible.builtin.pip:
+        name: docker
+
+    - name: Копирование файлов для сборки контейнеров
+      ansible.builtin.include_tasks:
+        file: "./services/copy_files_to_image.yml"
+        apply:
+          tags:
+            - prepare
+            - preconfig
+      loop: "{{ images }}"
+      loop_control:
+        loop_var: image
+  tags:
+    - prepare
+    - preconfig
+
+- name: Работаем с образами докера
+  block:
+    - name: Получение образа ubuntu
+      community.docker.docker_image:
+        name: ubuntu
+        source: pull
+        tag: latest
+        pull:
+          platform: amd64
+
+    - name: Запуск сборки контейнеров
+      ansible.builtin.include_tasks:
+        file: "./services/build_image.yml"
+        apply:
+          tags:
+            - images
+      loop: "{{ images }}"
+      loop_control:
+        loop_var: image
+  notify: Cleaner
+  tags:
+    - images
+    - preconfig

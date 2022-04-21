@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Vladimir Grushevsky
+  description: Подготовка образов для восстановления и резервного копирования баз
+  company: PAPALAM.ru
+
+  license: MIT
+
+  min_ansible_version: "2.1"
+
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+
+  galaxy_tags: []
+
+dependencies: []

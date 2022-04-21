@@ -1,0 +1,21 @@
+---
+- name: "[{{ image.name }}] Остановка и удаление контейнера"
+  community.docker.docker_container:
+    name: "{{ image.image_name }}"
+    state: absent
+
+- name: "[{{ image.name }}] Удаляем старый образ"
+  community.docker.docker_image:
+    name: "{{ image.image_name }}"
+    state: absent
+
+- name: "[{{ image.name }}] Собираем новый образ"
+  community.docker.docker_image:
+    name: "{{ image.image_name }}"
+    tag: latest
+    force_source: true
+    force_tag: true
+    build:
+      path: "{{ path_to_temp_files }}/{{ image.name }}"
+      dockerfile: "{{ path_to_temp_files }}/{{ image.name }}/Dockerfile"
+    source: build

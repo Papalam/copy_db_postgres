@@ -1,0 +1,36 @@
+---
+- name: Формирование имени файла и 
+  ansible.builtin.set_fact:
+    file_name: "{{ source }}.{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}.backup"
+    cacheable: false
+
+- name: выгрузка данных
+  community.docker.docker_container:
+    name: "{{ docker_image_postgres_dump }}"
+    image: "{{ docker_image_postgres_dump }}"
+    state: started
+    detach: no
+    command: >
+      --host postgres --port 5432 --username "postgres" --role "postgres" --no-password 
+      --format custom --blobs --section pre-data --section data --section post-data --encoding UTF8 
+      --verbose --file /backups/{{ file_name }} {{ source }}
+    volumes:
+      - /home/docker-containers/postgres/BACKUPS:/backups
+    networks:
+      - name: postgres_default
+
+- name: Восстановление базы данных
+  community.docker.docker_container:
+    name: "{{ docker_image_postgres_restore }}"
+    image: "{{ docker_image_postgres_restore }}"
+    state: started
+    detach: no
+    command: >
+      --clean --if-exists --clean --if-exists --host postgres --port 5432 --username "postgres" 
+      --dbname {{ dest }} --role "postgres" --no-password  --section pre-data --section data 
+      --section post-data --verbose /backups/{{ source }}.g5kici8l.backup
+    volumes:
+      - /home/docker-containers/postgres/BACKUPS:/backups
+    networks:
+      - name: postgres_default  
+

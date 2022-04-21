@@ -1,0 +1,11 @@
+---
+- name: Настройка системы
+  hosts: all
+  roles: 
+    - role: preconfig
+      tags: preconfig
+
+    - role: transfer
+      source: KT__KA24
+      dest: KT__KA24_COPY
+      tags: KT__KA24

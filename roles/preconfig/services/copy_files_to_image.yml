@@ -1,0 +1,18 @@
+---
+- name: "[{{ image.name }}] Cоздание директории и файлов для сборки"
+  ansible.builtin.file:
+    path: "{{ path_to_temp_files }}/{{ image.name }}"
+    mode: 0755
+    state: directory
+
+- name: "[{{ image.name }}] Создание Dockerfile для создания image"
+  ansible.builtin.template:
+    src: ./files/Dockerfile.j2
+    dest: "{{ path_to_temp_files }}/{{ image.name }}/Dockerfile"
+    mode: 0644
+
+- name: "[{{ image.name }}] Создание .pgpass для создания image"
+  ansible.builtin.copy:
+    src: ./files/.pgpass
+    dest: "{{ path_to_temp_files }}/{{ image.name }}/.pgpass"
+    mode: 0644

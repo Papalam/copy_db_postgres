@@ -1,0 +1,8 @@
+---
+images:
+  - name: dump
+    command: pg_dump
+    image_name: "{{ docker_image_postgres_dump }}"
+  - name: restore
+    command: pg_restore
+    image_name: "{{ docker_image_postgres_restore }}"

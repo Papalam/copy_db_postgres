@@ -1,0 +1,5 @@
+---
+docker_image_postgres_dump: postgres_dump
+docker_image_postgres_restore: postgres_restore
+
+path_to_temp_files: /tmp/docker_image/

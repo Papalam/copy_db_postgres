@@ -1,0 +1,2 @@
+[dockers]
+srv-docker-03   ansible_host=srv-docker-03.gkk.guru ansible_user=root

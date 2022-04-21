@@ -1,0 +1,5 @@
+---
+- name: Cleaner
+  ansible.builtin.file:
+    path: "{{ path_to_temp_files }}"
+    state: absent
