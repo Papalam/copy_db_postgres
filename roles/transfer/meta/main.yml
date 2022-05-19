@@ -1,6 +1,6 @@
 galaxy_info:
   author: Vladimir Grushevsky
-  description: Обновление копии БД
+  description: Организация и фактически обновление копии базы Postgres. Указывается база источник и база приемки. Делается dump данных и загрузка данных.
   company: PAPALAM.ru
 
   license: MIT
